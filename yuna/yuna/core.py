@@ -1,5 +1,6 @@
 from packages import pymysql
 import WindPy
+import re
 
 __title__ = 'yuna'
 __version__ = '0.0.2'
@@ -21,10 +22,15 @@ def update():
         cur.execute('create table `{}` (time date not null, price float not null)'.format(d[:-3]))
     except pymysql.err.InternalError:
         pass
-    if not cur.execute('select * from `{}` where time = {}{}{}'.format(d[:-3], b[0], b[1], b[2])):
-        cur.execute('insert into `{}` values ({}{}{}, {})'.format(d[:-3], b[0], b[1], b[2], c))
+    if not cur.execute('select * from `{}` where time = {}{}{}'.format(d[:-3], b[0], b[1], __date_update(b[2]))):
+        cur.execute('insert into `{}` values ({}{}{}, {})'.format(d[:-3], b[0], b[1],__date_update(b[2]), c))
     else:
         pass
     conn.commit()
     cur.close()
     conn.close()
+
+
+def __date_update(original_date):
+    """把类似2这样的单个数字转化为02，而双数字则保持不变"""
+    return re.sub(r'(\b[1-9]\b)', r'0\1', str(original_date))
