@@ -1,16 +1,19 @@
 from packages import pymysql
 import WindPy
 import re
+import datetime
 
 __title__ = 'yuna'
 __version__ = '0.0.2'
 __author__ = 'lvzhi'
 __copyright__ = 'Copyright 2017 lvzhi'
 
-WindPy.w.start()
-
 
 def update():
+    if datetime.date.today().weekday() in (5, 6):
+        return 'None'
+
+    WindPy.w.start()
     conn = pymysql.connect(host='localhost', port=3306, user='root', passwd='lvzhi', db='yuna',
                            charset='utf8')
     cur = conn.cursor()
@@ -29,6 +32,7 @@ def update():
     conn.commit()
     cur.close()
     conn.close()
+    return 'OK'
 
 
 def __date_update(original_date):
