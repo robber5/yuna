@@ -10,6 +10,7 @@ __copyright__ = 'Copyright 2017 lvzhi'
 
 
 def update():
+    """周六日无法更新"""
     if datetime.date.today().weekday() in (5, 6):
         return 'None'
 
@@ -38,3 +39,11 @@ def update():
 def __date_update(original_date):
     """把类似2这样的单个数字转化为02，而双数字则保持不变"""
     return re.sub(r'(\b[1-9]\b)', r'0\1', str(original_date))
+
+
+def _macd():
+    pass
+
+
+def _ma():
+    pass
